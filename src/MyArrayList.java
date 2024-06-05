@@ -1,3 +1,4 @@
+import javax.swing.text.html.HTMLDocument;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -20,7 +21,7 @@ public class MyArrayList<T> implements Iterable<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return (T) get(currentPointer);
+            return (T) get(currentPointer++);
         }
     }
 
