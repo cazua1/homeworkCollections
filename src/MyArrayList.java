@@ -24,8 +24,10 @@ public class MyArrayList<T> implements Iterable<T> {
         }
     }
 
-    private T[] data;
+    private final int defaultCapacity = 10;
     private int size = 0;
+    private T[] data;
+
 
     public MyArrayList(int capacity) {
         if (capacity < 0) {
@@ -35,11 +37,10 @@ public class MyArrayList<T> implements Iterable<T> {
     }
 
     public MyArrayList() {
-        int defaultCapacity = 10;
         data = (T[]) new Object[defaultCapacity];
     }
 
-    public MyArrayList(MyArrayList list) {
+    public MyArrayList(MyArrayList<T> list) {
         data = (T[]) new Object[list.size];
         addAll(list);
     }
@@ -49,17 +50,11 @@ public class MyArrayList<T> implements Iterable<T> {
     }
 
     public void add(T item) {
-        if (item == null) {
-            throw new NullPointerException();
-        }
         increaseCapacity(size + 1);
         data[size++] = item;
     }
 
     public void addAll(MyArrayList<? extends T> collection) {
-        if (collection == null) {
-            throw new NullPointerException();
-        }
         increaseCapacity(size + collection.size());
         Iterator<? extends T> iterator = collection.iterator();
         for (int i = 0; i < collection.size(); i++) {
@@ -68,7 +63,7 @@ public class MyArrayList<T> implements Iterable<T> {
     }
 
     public T get(int index) {
-        if (index >= 0 && index < size) {
+        if (isOutOfIndex(index)) {
             return data[index];
         } else {
             throw new IndexOutOfBoundsException();
@@ -76,7 +71,7 @@ public class MyArrayList<T> implements Iterable<T> {
     }
 
     public void remove(int index) {
-        if (index >= 0 && index < size) {
+        if (isOutOfIndex(index)) {
             int numberOfItemsAfterIndex = size - index - 1;
             System.arraycopy(data, index + 1, data, index, numberOfItemsAfterIndex);
             data[size--] = null;
@@ -121,5 +116,9 @@ public class MyArrayList<T> implements Iterable<T> {
             data = (T[]) new Object[newCapacity];
             System.arraycopy(oldData, 0, data,0, size);
         }
+    }
+
+    private boolean isOutOfIndex(int index) {
+        return index >= 0 && index < size;
     }
 }
